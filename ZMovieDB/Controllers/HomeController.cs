@@ -1,31 +1,21 @@
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using ZMovieDB.Models;
+using ZMovieDB.Data;
 
 namespace ZMovieDB.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private MovieContext context { get; set; }
 
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
+    public HomeController(MovieContext ctx) => context = ctx;
 
     public IActionResult Index()
     {
-        return View();
-    }
+        var movies = context.Movie.OrderBy(m => m.Name).ToList();
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View(movies);
     }
 }
