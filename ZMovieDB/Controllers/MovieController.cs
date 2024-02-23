@@ -20,12 +20,15 @@ namespace ZMovieDB.Controllers
         public async Task<IActionResult> Add()
         {
             ViewBag.Action = "Add";
+            ViewBag.Genres = context.Genre.OrderBy(g => g.Name).ToList();
             return View("Edit", new Movie());
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             ViewBag.Action = "Edit";
+            ViewBag.Genres = context.Genre.OrderBy(g => g.Name).ToList();
             var movie = context.Movie.Find(id);
 
             return View(movie);
@@ -47,6 +50,8 @@ namespace ZMovieDB.Controllers
              else
              {
                  ViewBag.Action = (movie.MovieId == 0) ? "Add" : "Edit";
+
+                 ViewBag.Genres = context.Genre.OrderBy(g => g.Name).ToList();
 
                  return View(movie);
              }
