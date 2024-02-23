@@ -11,6 +11,12 @@ public class Program
         builder.Services.AddDbContext<MovieContext>(options =>
             options.UseSqlite(builder.Configuration.GetConnectionString("MovieContext") ?? throw new InvalidOperationException("Connection string 'MovieContext' not found.")));
 
+        builder.Services.AddRouting(options =>
+        {
+           options.LowercaseUrls = true;
+           options.AppendTrailingSlash = true;
+        });
+
         // Add services to the container.
         builder.Services.AddControllersWithViews();
 
@@ -33,7 +39,7 @@ public class Program
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
+            pattern: "{controller=Home}/{action=Index}/{id?}/{slug?}");
 
         app.Run();
     }
